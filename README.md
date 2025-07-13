@@ -16,3 +16,5 @@ npm run dev
 ## Deployment
 
 A GitHub Actions workflow builds the project and deploys the contents of `dist/` to GitHub Pages on every push to the `main` branch. Enable the "GitHub Pages" source from GitHub Actions in the repository settings.
+
+The `vite.config.js` file sets `base: '/gerb-to-cut/'` so the app works correctly when served from GitHub Pages.
