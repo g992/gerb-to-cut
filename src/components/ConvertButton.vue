@@ -1,12 +1,16 @@
 <script setup>
 import { useOptionsStore } from '../stores/options'
 import { useUiStore } from '../stores/ui'
+import { generateDxf } from '../lib/dxf.service'
 
 const store = useOptionsStore()
 const ui = useUiStore()
 
 function convert() {
-  const dxf = '0\nSECTION\n2\nENTITIES\n0\nENDSEC\n0\nEOF\n'
+  const layers = [
+    { name: store.layer || 'Layer1', primitives: store.primitives }
+  ]
+  const dxf = generateDxf(layers, { units: store.units, scale: store.scale })
   const blob = new Blob([dxf], { type: 'application/dxf' })
   const url = URL.createObjectURL(blob)
   const name = store.file ? store.file.name.replace(/\.[^.]+$/, '.dxf') : 'output.dxf'
