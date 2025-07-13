@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { parseGerber } from '../lib/parseGerber'
+import { useUiStore } from './ui'
 
 export const useOptionsStore = defineStore('options', {
   state: () => ({
@@ -8,6 +10,7 @@ export const useOptionsStore = defineStore('options', {
     scale: 1,
     dpi: 300,
     invert: false,
+    primitives: [],
   }),
   getters: {
     isValid: (state) =>
@@ -20,6 +23,17 @@ export const useOptionsStore = defineStore('options', {
       if (ext === 'gtp') this.layer = 'Top'
       else if (ext === 'gbr') this.layer = 'Outline'
       else this.layer = 'Unknown'
+
+      const reader = new FileReader()
+      reader.onload = () => {
+        try {
+          this.primitives = parseGerber(reader.result)
+        } catch (e) {
+          this.primitives = []
+          useUiStore().addToast(e.message)
+        }
+      }
+      reader.readAsText(file)
     },
   },
 })
