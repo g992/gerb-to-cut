@@ -1,9 +1,21 @@
 <script setup>
+import Header from './components/Header.vue'
+import FileUpload from './components/FileUpload.vue'
+import OptionsForm from './components/OptionsForm.vue'
+import ConvertButton from './components/ConvertButton.vue'
+import ToastContainer from './components/ToastContainer.vue'
 </script>
 
 <template>
-  <h1>Hello Vue 3 + Vite</h1>
+  <div class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-grow grid place-items-center p-4">
+      <div class="w-full max-w-xl space-y-6">
+        <FileUpload />
+        <OptionsForm />
+        <ConvertButton />
+      </div>
+    </main>
+    <ToastContainer />
+  </div>
 </template>
-
-<style>
-</style>
