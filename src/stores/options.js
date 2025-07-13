@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { parseGerber } from '../lib/parseGerber'
+import { computeBBox } from '../lib/computeBBox'
 import { useUiStore } from './ui'
 
 export const useOptionsStore = defineStore('options', {
@@ -11,6 +12,7 @@ export const useOptionsStore = defineStore('options', {
     dpi: 300,
     invert: false,
     primitives: [],
+    bbox: null,
   }),
   getters: {
     isValid: (state) =>
@@ -28,8 +30,10 @@ export const useOptionsStore = defineStore('options', {
       reader.onload = () => {
         try {
           this.primitives = parseGerber(reader.result)
+          this.bbox = computeBBox(this.primitives)
         } catch (e) {
           this.primitives = []
+          this.bbox = null
           useUiStore().addToast(e.message)
         }
       }
